@@ -211,7 +211,7 @@ class Reservation extends Component {
 		api.post(api.getUrl('reserveDoctor','/hido-core'), req).then(res => {
 			if(res.code === '000'){
 				if(this.state.couponDetailShow && this.state.checked){
-					this.props.history.push('paymentList?businessNo='+res.content.businessNo+'&actualAmount='this.state.couponDetail.payAmount)
+					this.props.history.push('paymentList?businessNo='+res.content.businessNo+'&actualAmount='+this.state.couponDetail.payAmount)
 				}else{
 					this.props.history.push('reservationStatus?businessNo='+res.content.businessNo)
 				}

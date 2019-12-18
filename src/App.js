@@ -11,7 +11,6 @@ class App extends Component {
   render() {
     return (
         <Router>
-          <div className="content">           
  {
               routes.map((route,key)=>{
                   if(route.exact){
@@ -31,7 +30,6 @@ class App extends Component {
                   }
               })
             }      
-         </div>
       </Router>
     );
   }

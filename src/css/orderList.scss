@@ -1,0 +1,28 @@
+.orderList{
+     width:100%;
+     height:100%;
+     background: #F5F5F5;
+    .order-time{
+        color:#8A9399;
+        font-size:1.2rem;
+        margin-left:1.5rem;
+        padding:1.2rem 0 1.2rem 0;
+        border-bottom: 0.5px solid #F5F5F5;
+    }
+    .order-center{
+           display: table-cell;
+           vertical-align: middle;
+           padding-left:1.5rem;
+           width:80%;
+        div:first-child{
+            color:#1A2833;
+            font-size:1.5rem;
+            font-weight:500;
+        }
+        div:last-child{
+            color:#FF7B31;
+            font-size:1.8rem;
+            font-weight: 600;
+        }
+    }
+}

@@ -11,7 +11,8 @@ class PaymentList extends Component {
 			tel: '',
 			teltrue: false,
 			reserveDetail:{},
-			actualAmount:getQueryString('actualAmount')
+			actualAmount:getQueryString('actualAmount'),
+			h5paysuccess:true
 		}
 	}
 	componentDidMount() {
@@ -23,9 +24,12 @@ class PaymentList extends Component {
 			payType:'WX_H5'
 		}
 		api.post(api.getUrl('reservePay','/hido-core'), req).then(res => {
-			if(res.code === '000'){
-				window.location.href = JSON.parse(res.content.respExt).mWebUrl
-			}
+			let uri = ''
+			uri = window.location.origin + window.location.pathname+'/paymentList?h5paysuccess=true' + '&actualAmount=' + getQueryString('actualAmount')
+			let linkUrl = encodeURIComponent(uri)
+			setTimeout(() => {
+				window.location.href = JSON.parse(res.content.respExt).mWebUrl+'&redirect_url=' + linkUrl
+			}, 100)
 		}).catch(() => {})
 	}
 	orderPay(){
@@ -35,7 +39,13 @@ class PaymentList extends Component {
 		}
 		api.post(api.getUrl('orderPay','/hido-core'), req).then(res => {
 			if(res.code === '000'){
-				window.location.href = JSON.parse(res.content.respExt).mWebUrl
+				let uri = ''
+				uri = window.location.origin + window.location.pathname+'/paymentList?h5paysuccess=true' + '&actualAmount=' + getQueryString('actualAmount') + '&businessNo=' + getQueryString('businessNo') + '&fromOrder=1'
+				let linkUrl = encodeURIComponent(uri)
+				setTimeout(() => {
+					window.location.href = JSON.parse(res.content.respExt).mWebUrl+'&redirect_url=' + linkUrl
+				}, 100)
+				
 			}
 		}).catch(() => {})
 	}
@@ -44,6 +54,18 @@ class PaymentList extends Component {
 			this.orderPay()
 		}else{
 			this.reservePay()
+		}
+	}
+	payFailure=()=>{
+		this.setState({
+			h5paysuccess:false
+		})
+	}
+	paySuccess=()=>{
+		if(getQueryString('fromOrder')){
+			this.props.history.push('reservationStatus?fromOrder=1')
+		}else{
+			this.props.history.push('reservationStatus')
 		}
 	}
 	render() {
@@ -59,6 +81,17 @@ class PaymentList extends Component {
 					<img src={require('../image/gouxuan@2x.png')} style={{width:"2.2rem",float:'right',paddingTop:'2rem',marginRight:'1.5rem'}}/>
 				</div>
 				<div className="buyBtn" onClick={this.buy}>立即支付</div>
+				<div className="after-pay-wrapper" style={{display:this.state.h5paysuccess?'block':'none'}}>
+					<div className="after-pay-content">
+						<div className="pay-title">提示</div>
+						<div className="pay-tips">请确认微信支付是否成功</div>
+						<div className="border-style"></div>
+						<div className="pay-button">
+							<div onClick={this.payFailure}>支付失败</div>
+							<div onClick={this.paySuccess}>支付成功</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		)
 	}

@@ -284,7 +284,6 @@ export const timeInterval = (endDate, startDate) => {
  **/
 export const dateFormatter = (datetime, fmt, fix) => {
 	offSet = !fix ? 0 : offSet
-	// date = datetime instanceof Date ? datetime : new Date(+datetime + offSet)
 	date = datetime instanceof Date ? datetime : new Date(datetime)
 	let o = {
 		'M+': date.getMonth() + 1, // 月份
@@ -300,6 +299,7 @@ export const dateFormatter = (datetime, fmt, fix) => {
 		fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))
 	}
 	if(/(E+)/.test(fmt)) {
+		console.log(RegExp.$1)
 		fmt = fmt.replace(RegExp.$1, ((RegExp.$1.length > 1) ? (RegExp.$1.length > 2 ? '星期' : '周') : '') + week[date.getDay() + ''])
 	}
 	for(let k in o) {
@@ -516,6 +516,17 @@ export const getQueryString = (key) => {
 		return result ? decodeURIComponent(result[2]) : null
 	}
 }
+export const getPayType = (value) =>{
+	if(value=='WX'){
+		return '微信'
+	}else if(value == 'ALIPAY'){
+		return '支付宝'
+	}else if(value == 'MM_INSTALMENT'){
+		return '米么分期'
+	}else if(value == 'BAK'){
+		return '银行卡支付'
+	}
+}
 export default {
 	htmlFontSize,
 	validator,
@@ -534,5 +545,6 @@ export default {
 	getByteLen,
 	getpPayType,
 	checkRules,
-	getQueryString
+	getQueryString,
+	getPayType
 }
