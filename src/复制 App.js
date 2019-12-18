@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import { resetFontSize } from './common/api.js'
-import './css/common.css'
-import 'antd/dist/antd.css';
+import './css/index.css'
 import routes from './route/router.js'
 class App extends Component {
-		componentDidMount() {
-			resetFontSize(document, window)
-	}
   render() {
     return (
         <Router>
           <div className="content">           
+              <header className="title">
+                <Link to="/">首页</Link>
+                <Link to="/news">新闻</Link>
+                <Link to="/product">商品</Link>
+                <Link to="/user-more">用户页面2</Link>
+              </header>
  {
               routes.map((route,key)=>{
                   if(route.exact){

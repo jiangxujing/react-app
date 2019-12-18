@@ -1,0 +1,56 @@
+/*.title{
+	font-size:28px;
+	color:#1A2833;
+	font-weight: 500;
+	padding-top:60px;
+	padding-left:25px;
+}*/
+.tel-input{
+	border:none;
+	padding-left:25px;
+	outline: none;
+}
+.borerStyle{
+	width:80%;
+	height:1px;
+	background: #EAEAEA;
+	margin-left:25px;
+	margin-right:25px;
+	margin-top:13px;
+}
+.btn{
+	width:100%;
+	text-align: center;
+}
+.nextBtn{
+	height:45px;
+	width:86%;
+	border:none;
+	color:#fff;
+	text-align: center;
+	border-radius:23px;
+	margin-top:60px;
+	background:linear-gradient(132deg,rgba(255,175,130,1) 0%,rgba(255,123,49,1) 100%);
+}
+.gray{
+	opacity:0.5
+}
+.jumpNext{
+	text-align: center;
+	padding-top:16px;
+	
+}
+.reservation{
+	width:100%;
+	height:100%;
+	background:#F8F8F8;
+}
+body,html,.content{
+	width:100%;
+	height:100%;
+}
+.list-style{
+	width:100%;
+	padding:15px 10px 15px 15px;
+	background: #fff;
+}

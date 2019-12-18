@@ -1,0 +1,107 @@
+.reservation-title{
+	line-height:40px;
+	padding-left:15px;
+}
+.input-style{
+	border:none;
+	outline: none;
+	padding-left:40px;
+}
+.project-list-wrapper,.doctor-list-wrapper{
+	width:100%;
+	height:100%;
+	background: #fff;
+	position:fixed;
+	left:0;
+	top:0;
+	z-index: 111;
+}
+.project-item{
+	width:100%;
+	height:50px;
+	border-bottom:1px solid #eee;
+	margin-left:15px;
+	line-height: 50px;
+	box-sizing: border-box;
+}
+ul,li{
+	list-style: none;
+}
+.hour-list{
+	line-height:2rem;
+}
+.activehour{
+	color:red;
+}
+.coupon{
+	width:100%;
+	height:6rem;
+	background: #FFF5EF;
+	color:#FF7B31;
+	padding-left:1.5rem;
+	line-height:6rem;
+}
+.confirm-wrapper{
+	width:100%;
+	height:100%;
+	background: rgba(0,0,0,.6);
+	position:fixed;
+	left:0;
+	top:0;
+	z-index: 11;
+}
+.confirm-content{
+	width:70%;
+	border-radius:1.4rem;
+	background: #fff;
+	margin:40% auto;
+	padding-bottom:1rem;
+}
+.project-list{
+	font-size:1.4rem;
+	padding-left:1.5rem;
+	line-height: 3rem;
+}
+.confirm-title{
+	font-size:1.7rem;
+	color:#4B464D;
+	padding-top:2rem;
+	text-align: center;
+}
+.project-title{
+	color:#8A9399;
+}
+.project-content{
+	color:#1A2833;
+	padding-left:1rem;
+}
+.reservationBtn{
+	width:70%;
+	height:4.5rem;
+	background:linear-gradient(132deg,rgba(255,175,130,1) 0%,rgba(255,123,49,1) 100%);
+	border-radius:2.3rem;
+	opacity:0.5;
+	color:#fff;
+	font-size:1.7rem;
+	text-align: center;
+	line-height: 4.5rem;
+	margin:2rem auto;
+}
+.active-reservation{
+	opacity: 1;
+}
+.confirmBtn{
+	color:#FF7B31;
+	font-size:1.7rem;
+	text-align: center;
+	padding-top:1rem;
+}
+.borderStyle{
+	width:100%;
+	height:1px;
+	background: #E0E0E0;
+	margin-top:2.5rem;
+}
+.title{
+	padding:2rem;
+}

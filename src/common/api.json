@@ -1,0 +1,49 @@
+{
+    "login-phoneLogin": "/login/phoneLogin",
+    "common-sendMobileCode": "/v2/common/sendMobileCode",
+    "createOrderV2":"/v2/order/createOrderV2",
+    "pay":"/v2/order/pay",
+
+    "bankCard-v3-getVerifyCode": "/bankCard/v3/getVerifyCode",
+    "bankCard-v3-bindBankCard": "/bankCard/v3/bindBankCard",
+
+    "customer-home-myReports": "/customer/home/myReports",
+    "customer-myReportDetail": "/customer/myReportDetail",
+    "customer-orderList": "/customer/orderList",
+    "customer-orderDetail": "/customer/orderDetail",
+    "customer-reserveDetail": "/customer/reserveDetail",
+    "customer-createFeeOrder": "/customer/createFeeOrder",
+    "customer-confirmVisit": "/customer/confirmVisit",
+    "customer-feeOrderDetail": "/customer/feeOrderDetail",
+    "customer-feeOrderPreview": "/customer/feeOrderPreview",
+
+    "agent-queryMyteam":"/agent/queryMyteam",
+    "agent-queryBills":"/agent/queryBills",
+    "agent-queryBankLimit":"/agent/queryBankLimit",
+    "agent-queryBindBankList":"/agent/queryBindBankList",
+    "agent-createCoupon":"/agent/createCoupon",
+    "agent-myCoupon":"/agent/myCoupon",
+
+    "queryWithdrawal":"/agent/queryWithdrawal",
+    "withdrawalSendSms":"/agent/withdrawalSendSms",
+    "withdrawalAuthSendSms":"/agent/withdrawalAuthSendSms",
+    "queryAgent":"/agent/queryAgent",
+
+    "queryPurchasedPackageList":"/mall/queryPurchasedPackage",
+    "queryPackageOrderDetail":"/mall/queryPackageOrder",
+    "queryPackage":"/mall/queryPackageDetails",
+   
+    "queryAdminRegion":"/area/queryAll",
+    "oauth2":"/oauth2/access_token",
+    "share":"/test/wechatShare",
+    "unifiedorder":"/unifiedorder",
+    
+    "medicineItemsList":"/customer/medicineItemsList",
+    "doctorsList":"/customer/doctorsList",
+    "reserveDoctor":"/customer/reserveDoctor",
+    "queryCoupon":"/customer/getCoupon",
+    "paymentType":"/customer/paymentType",
+    "isHasParentAgent":"/customer/hasParentAgent",
+    "reservePay":"/customer/reservePay",
+    "orderPay":"/customer/orderPay"
+}
