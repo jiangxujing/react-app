@@ -18,9 +18,10 @@
         width:68%;
     }
     .ant-input {
-        border: none;
-        outline: none;
+        border: none!important;
+        outline: none!important;
         padding-left:2.5rem;
+         box-shadow: none;
     }
     .border-style{
         width:100%;

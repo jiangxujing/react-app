@@ -19,7 +19,7 @@ class PaymentList extends Component {
 	}
 	reservePay(){
 		let req = {
-			businessNo:this.props.location.search.split('?businessNo=')[1],
+			businessNo:getQueryString('businessNo'),
 			payType:'WX_H5'
 		}
 		api.post(api.getUrl('reservePay','/hido-core'), req).then(res => {

@@ -26,12 +26,12 @@ class Reservation extends Component {
 			checked: true,
 			couponDetailShow: 'none',
 			comfirmBOxShow: 'none',
-			agentPhone:'',
-			hourList: ['9:00-10:00', '10:00-11:00', '11:00-12:00', '12:00-:13:00', '13:00-14:00', '14:00-15:00', '15:00-16:00', '16:00-17:00', '17:00-18:00', '18:00-19:00']
+			agentPhone: '',
+			couponShow: 'none',
+			hourList: ['9:00-10:00', '10:00-11:00', '11:00-12:00', '12:00-13:00', '13:00-14:00', '14:00-15:00', '15:00-16:00', '16:00-17:00', '17:00-18:00', '18:00-19:00']
 		};
 	}
 	componentDidMount() {
-		this.getMedicineItemsTotalList()
 		this.isHasParentAgent()
 	}
 	openAdvisoryList = (params) => {
@@ -74,21 +74,21 @@ class Reservation extends Component {
 					docrtoractive: index,
 					showDoctorElem: 'none',
 					doctorName: value.doctorName,
-					doctorNo:value.doctorNo
+					doctorNo: value.doctorNo
 				})
 			} else {
 				this.setState({
 					docrtoractive: -1,
 					showDoctorElem: 'none',
 					doctorName: '',
-					doctorNo:''
+					doctorNo: ''
 				})
 			}
 		}
 	}
 	openHour = () => {
 		this.setState({
-			hourShowElem: 'block'
+			hourShowElem: this.state.hourShowElem === 'block' ? 'none' : 'block'
 		})
 	}
 	queryCoupon(params) {
@@ -96,12 +96,15 @@ class Reservation extends Component {
 		let req = {
 			agentPhone: params
 		}
-		api.post(api.getUrl('queryCoupon','/hido-core'), req).then(res => {
-			if(res.content && res.content.couponNo) {
-				this.setState({
-					couponDetailShow: 'block',
-					couponDetail: res.content
-				})
+		api.post(api.getUrl('queryCoupon', '/hido-core'), req).then(res => {
+			if(res.code === 0) {
+				if(res.content && res.content.couponNo) {
+					this.setState({
+						couponDetailShow: 'block',
+						couponShow: 'block',
+						couponDetail: res.content
+					})
+				}
 			}
 		}).catch(() => {})
 	}
@@ -109,22 +112,26 @@ class Reservation extends Component {
 		let req = {
 			medicineItemNo: this.state.itemNo
 		}
-		api.post(api.getUrl('doctorsList','/hido-core'), req).then(res => {
+		api.post(api.getUrl('doctorsList', '/hido-core'), req).then(res => {
 			this.setState({
 				doctorList: res.content
 			})
 		}).catch(() => {})
 	}
 	getMedicineItemsTotalList() {
-		api.post(api.getUrl('medicineItemsList','/hido-core'), {}).then(res => {
-			this.setState({
-				projectList: res.content
-			})
+		api.post(api.getUrl('medicineItemsList', '/hido-core'), {}).then(res => {
+			if(res.code === 0) {
+				this.setState({
+					projectList: res.content
+				})
+			}
+
 		}).catch(() => {})
 	}
 	checkedCoupon = () => {
 		this.setState({
-			checked: !this.state.checked
+			checked: !this.state.checked,
+			couponShow: this.state.checked === true ? 'block' : 'none'
 		})
 	}
 	closeConmfirmBox = () => {
@@ -164,17 +171,21 @@ class Reservation extends Component {
 		}
 	}
 	isHasParentAgent() {
-		api.post(api.getUrl('isHasParentAgent','/hido-core'), {}).then(res => {
-			this.refs.customerPhone.value = res.content.customerPhone
-			this.agentPhone = res.content.agentPhone
-			//从推荐人手机号过来的
-			if(this.props.location.search) {
-				if(sessionStorage.getItem('agentPhone')) {
-					this.queryCoupon(sessionStorage.getItem('agentPhone'))
+		api.post(api.getUrl('isHasParentAgent', '/hido-core'), {}).then(res => {
+			if(res.code !== 9999) {
+				this.refs.customerPhone.value = res.content.customerPhone
+				this.agentPhone = res.content.agentPhone
+				//从推荐人手机号过来的
+				if(this.props.location.search) {
+					if(sessionStorage.getItem('agentPhone')) {
+						this.queryCoupon(sessionStorage.getItem('agentPhone'))
+					}
+				} else {
+					this.queryCoupon(this.agentPhone)
 				}
-			} else {
-				this.queryCoupon(this.agentPhone)
+				this.getMedicineItemsTotalList()
 			}
+
 		}).catch(() => {})
 	}
 	getReservation = () => {
@@ -183,8 +194,8 @@ class Reservation extends Component {
 		})
 	}
 	confrimReservation = () => {
-			let frontendTime = this.state.hour.split('-')[0] + ':00'
-			let time = this.state.date + ' ' + frontendTime
+		let frontendTime = this.state.hour.split('-')[0] + ':00'
+		let time = this.state.date + ' ' + frontendTime
 		let req = {
 			agentPhone: sessionStorage.getItem('agentPhone') || this.agentPhone || null,
 			appointmentDate: new Date(time).getTime(),
@@ -195,17 +206,45 @@ class Reservation extends Component {
 			medicineItemName: this.state.itemName,
 			medicineItemNo: this.state.itemNo
 		}
-		api.post(api.getUrl('reserveDoctor','/hido-core'), req).then(res => {
-			if(res.code === '000'){
-				if(this.state.couponDetailShow && this.state.checked){
-					this.props.history.push('paymentList?businessNo='+res.content.businessNo+'&actualAmount='+this.state.couponDetail.payAmount)
-				}else{
-					this.props.history.push('reservationStatus?businessNo='+res.content.businessNo)
+		api.post(api.getUrl('reserveDoctor', '/hido-core'), req).then(res => {
+			if(res.code === 0) {
+				if(this.state.couponDetailShow === 'block' && this.state.checked) {
+					this.props.history.push('paymentList?businessNo=' + res.content.businessNo + '&actualAmount=' + this.state.couponDetail.payAmount / 100)
+				} else {
+					this.props.history.push('reservationStatus?businessNo=' + res.content.businessNo)
 				}
-			}else{
+			} else {
 				message.warning(res.desc)
 			}
 		}).catch(() => {})
+	}
+	closeList = (item) => {
+		if(item === 1) {
+			this.setState({
+				showElem: 'none'
+			})
+		} else {
+			this.setState({
+				showDoctorElem: 'none'
+			})
+		}
+	}
+	disabledEndDate = (endValue) => {
+		let me = this;
+		const startValue = this.state.currentTime + 24 * 60 * 60;
+		if(!endValue || !startValue) {
+			return false;
+		}
+		return endValue.valueOf() <= startValue.valueOf();
+	}
+	handleEndOpenChange = (open) => {
+		let me = this
+		if(open) {
+			me.currentTime = moment();
+		}
+		this.setState({
+			currentTime: moment()
+		});
 	}
 	render() {
 		return(
@@ -224,7 +263,7 @@ class Reservation extends Component {
                	 	</div>
                	 	<div className="list-style" onClick={this.openAdvisoryList.bind(this,3)}>
                	 		<span>面诊时间</span>
-						<DatePicker style={{paddingLeft:"20px",width:"45%"}} onChange={this.onChange} allowClear/>
+						<DatePicker disabledDate={this.disabledEndDate} style={{paddingLeft:"20px",width:"45%"}} onChange={this.onChange} allowClear onOpenChange={this.handleEndOpenChange}/>
 						<span onClick={this.openHour} style={{paddingLeft:"10px"}}>{this.state.hour}</span>
 						<ul className="hour-list" style={{display:this.state.hourShowElem}}>
 							{
@@ -236,7 +275,7 @@ class Reservation extends Component {
 							}
 							<li></li>
 						</ul>
-               	 		<img alt="arrow" src={require('../image/arrow.png')} style={{width:"22px",float:"right"}}/>
+               	 		<img alt="arrow" src={require('../image/arrow.png')} style={{width:"22px",float:"right",paddingTop:'0.5rem'}}/>
                	 	</div>
                	 </div>
                	  <div>
@@ -257,6 +296,9 @@ class Reservation extends Component {
                	 {this.state.reservationActive?<div className="reservationBtn active-reservation" onClick={this.getReservation}>预约</div>
                     :<div className="reservationBtn">预约</div>}
                	 <div className="project-list-wrapper" style={{display:this.state.showElem}}>
+           	 	<div style={{overflow:'hidden',background:'#F8F8F8',padding:'1rem'}} onClick={this.closeList.bind(this,1)}>
+           	 		<img alt="arrow" src={require('../image/close.png')} style={{width:"22px",float:'right'}}/>
+           	 	</div>
                	 {
         			this.state.projectList.map((value,key)=>{
         				return(
@@ -270,6 +312,9 @@ class Reservation extends Component {
             		}
                	 </div>
                	 <div className="doctor-list-wrapper" style={{display:this.state.showDoctorElem}}>
+               	 <div style={{overflow:'hidden',background:'#F8F8F8',padding:'1rem'}} onClick={this.closeList.bind(this,2)}>
+           	 		<img alt="arrow" src={require('../image/close.png')} style={{width:"22px",float:'right'}}/>
+           	 	</div>
                	 	{
                	 		this.state.doctorList.map((value,key)=>{
                	 			return(
@@ -297,7 +342,7 @@ class Reservation extends Component {
                	 			<span className="project-title">预约时间:</span>
                	 			<span className="project-content">{this.state.date} {this.state.hour}</span>
                	 		</div>
-               	 		<div className="project-list" style={{display:this.state.couponDetailShow && this.state.checked===false?'none':'block'}}>
+               	 		<div className="project-list" style={{display:this.state.couponShow}}>
                	 			<span className="project-title">预付金:</span>
                	 			<span className="project-content">{this.state.couponDetail.payAmount/100}元</span><span style={{color:'#FF7B31',fontSize:'1.2rem'}}>(实际抵扣{this.state.couponDetail.deductionAmount/100}元)</span>
                	 		</div>

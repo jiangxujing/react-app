@@ -8,7 +8,7 @@ import WaitPaymentDetail from '../components/WaitPaymentDetail'
 import OrderList from '../components/OrderList'
 import OrderDetail from '../components/OrderDetail'
 let routes = [{
-	path: '/',
+	path: '/referrerPhone',
 	component: ReferrerPhone,
 	exact: true
 },{

@@ -28,10 +28,14 @@ ul,li{
 	list-style: none;
 }
 .hour-list{
-	line-height:2rem;
+    text-align: center;
+    margin-top:1rem;
+	li{
+	   line-height:3rem; 
+	}
 }
 .activehour{
-	color:red;
+	color:#FF7B31;
 }
 .coupon{
 	width:100%;

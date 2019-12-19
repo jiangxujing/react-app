@@ -34,6 +34,7 @@ const _parseJSON = str => {
     try {
         return JSON.parse(str)
     } catch (ex) {}
+     return (new Function('', 'return ' + str))()
 }
 // 一般请求
 //const prefix = '/hido-core'
@@ -46,6 +47,7 @@ const getUrl = (key,prefix) => {
 }
 
 const post = (url, data, noBox,noLoading, noToken,formData) => {
+	console.log(url)
 	// 超时
 	const sec = 6000
 	// body 入参
@@ -82,9 +84,12 @@ const post = (url, data, noBox,noLoading, noToken,formData) => {
 			 if(respData['code'] !== 0) {
 			 	let statucCode = [111, 1210, 1211, 9999]
 			 	 if(statucCode.indexOf(respData['code']) !== -1){
-			 	 	delCookie('mmTicket')
+			 	 	console.log(window.location.href)
 			 	 	sessionStorage.setItem('locationurl',window.location.href)
-				 	window.location.href = '/login'
+			 	 	delCookie('mmTicket')
+			 	 	setTimeout(()=>{
+			 	 		window.location.href = '#/login'
+			 	 	},200)
 				 }
 			 	 let desc = respData['desc'] ? respData['desc'] : '网络异常，请稍后再试'
 				message.warning(desc)
