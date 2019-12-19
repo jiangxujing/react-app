@@ -1,13 +1,5 @@
 import _ from 'lodash'
-
-const ua = navigator.userAgent.toLowerCase(), //判断浏览器类型 
-	arrExp = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2], // 加权因子
-	arrValid = ['1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2']; // 校验码
-
 let date = null,
-	sysPlatform = '',
-	cookiePosBegin = -1,
-	cookiePosEnd = -1,
 	offSet = 60 * 1000 * (new Date(0)).getTimezoneOffset(),
 	week = {
 		'0': '日',
@@ -17,66 +9,7 @@ let date = null,
 		'4': '四',
 		'5': '五',
 		'6': '六'
-	},
-	regObj = {
-		'chsName': /^[\u4E00-\u9FFF]([\u4E00-\u9FFF]{0,3})[\u4E00-\u9FFF]$/, // 2-5汉字
-		'vCode4': /^\d(\d{2})\d$/, // 4位验证码
-		'vCode6': /^\d(\d{4})\d$/, // 6位验证码
-		'mobile': /^1\d{10}$/, // 通用手机号
-		'email': /^(\w)+[(\.\w+)|(\-\w+)]*@(\w)+(([\.|\-]\w+)+)$/, // 邮箱
-		'strongPwd': /^(?=.*[A-Za-z]+)(?=.*\d+)(?=.*[\~\!\@\#\$%\^&\*\(\)_\+\{\}\:\;\"\"\'\/\`\?\<\>\.\,\[\]\-\=\\\|]+)[A-Za-z\d\x21-\x7e]{8,16}$/ // 强密码
-	},
-	regFunc = {
-		idNum(cid) {
-			if(/^\d{17}(\d|x|X)$/i.test(cid)) {
-				let sum = 0,
-					idx = 0;
-				for(let i = 0; i < cid.length - 1; i++) { // 对前17位数字与权值乘积求和
-					sum += parseInt(cid.substr(i, 1), 10) * arrExp[i]
-				}
-				idx = sum % 11 // 计算模（固定算法）
-				return arrValid[idx] === cid.substr(17, 1).toUpperCase() // 检验第18为是否与校验码相等
-			} else if(/^[1-9]\d{7}((0[1-9])|(1[0-2]))((0[1-9])|([1-2][0-9])|(3[0-1]))\d{3}$/.test(cid)) {
-				return true
-			} else {
-				return false
-			}
-		}
-	},
-	crypts = {
-		encode(val) {
-			if(val === undefined) {
-				return window.encodeURIComponent('')
-			}
-
-			if(typeof val === typeof 1) {
-				val += ''
-			}
-
-			if(_.isObject(val)) {
-				return window.encodeURIComponent(JSON.stringify(val))
-			} else if(typeof val === typeof 'a') {
-				return window.encodeURIComponent(val)
-			} else {
-				return window.encodeURIComponent('')
-			}
-		},
-		decode(val) {
-			try {
-				return JSON.parse(window.decodeURIComponent(val))
-			} catch(e) {
-				return window.decodeURIComponent(val)
-			}
-		}
-	};
-
-if(/iphone|ipad|ipod/.test(ua)) { //调用设备对象的test方法判断设备类型
-	sysPlatform = 'IOS'
-} else if(/android/.test(ua)) {
-	sysPlatform = 'ANDROID'
-} else {
-	sysPlatform = ''
-}
+	}
 
 // 控制页面字体大小
 export const htmlFontSize = () => {
@@ -96,29 +29,18 @@ export const htmlFontSize = () => {
 
 export const resetFontSize = (doc, win) => {
 	let docEle = doc.documentElement,
-		// evt = 'orientationchange' in window ? 'orientationchange' : 'resize,
 		fn = function() {
 			setTimeout(function() {
 				let width = docEle.clientWidth
 				width && (docEle.style.fontSize = 10 * (width / 375) + 'px')
 			}, 1000 / 60)
 		}
-	'orientationchange' in win ? win.addEventListener('orientationchange', fn, false) : ''
 	win.addEventListener('resize', fn, false)
 	doc.addEventListener('DOMContentLoaded', fn, false)
 	fn()
 }
 
 export const resetWindow = () => {
-	// 重设 viewport 的 height ，防止在 ios 低版本下高度的bug
-	const resetViewHeight = (h) => {
-		let vpList = document.getElementsByName('viewport')
-		_.forEach(vpList, vp => {
-			let content = vp.getAttribute('content')
-			vp.setAttribute('content', content.replace(/height=.+?,/gi, 'height=' + h + ','))
-		})
-	}
-
 	const resetWidth = () => {
 		let winW = window.innerWidth || document.documentElement.clientWidth
 		// console.log(winW)
@@ -128,61 +50,17 @@ export const resetWindow = () => {
 		localStorage.setItem('width', winW)
 	}
 
-	const resetHeight = () => {
-		let winH = window.innerHeight || document.documentElement.clientHeight
-		// console.log(winH)
-		document.documentElement.style.height = winH + 'px'
-		document.body.style.height = winH + 'px'
-		let pageContainers = document.querySelectorAll('.page-container')
-		_.forEach(pageContainers, pc => {
-			pc.style.minHeight = winH + 'px'
-			pc.style.height = winH + 'px'
-		})
-		sysPlatform === 'IOS' ? resetViewHeight(winH) : ''
-		// console.log('window height:' + winH)
-	}
 
 	resetWidth()
-	resetHeight()
 	window.addEventListener('resize', () => {
 		resetWidth()
-		resetHeight()
 	})
 	window.addEventListener('orientationchange', () => {
 		resetWidth()
-		resetHeight()
 	})
 	document.addEventListener('focusout', () => {
 		window.scrollTo(0, 0)
 	})
-
-	// ios下解决点出去不失焦的问题
-	const objBlur = (item, time) => {
-		time = time || 300
-		let obj = item,
-			docTouchend = event => {
-				if(event.target !== obj) {
-					setTimeout(() => {
-						obj.blur()
-						document.removeEventListener('touchend', docTouchend, false)
-					}, time)
-				}
-			}
-		if(obj) {
-			obj.addEventListener('focus', () => {
-				document.addEventListener('touchend', docTouchend, false)
-			}, false)
-		}
-	}
-
-	if(sysPlatform === 'IOS') {
-		let ipts = document.querySelectorAll('input')
-		_.forEach(ipts, item => {
-			// eslint-disable-next-line
-			let input = new objBlur(item)
-			input = null
-		})
-	}
 }
 
 export const dispatchEvent = (target, evt) => {
@@ -243,43 +121,6 @@ export const filterVal = (name, val) => {
 }
 
 /**
- * 格式校验
- **/
-export const validator = (val, type) => {
-	if(type === 'idNum') {
-		return regFunc.idNum(val)
-	} else if(typeof type === typeof 'a' && !!regObj[type]) {
-		return regObj[type].test(val)
-	} else {
-		return false
-	}
-}
-
-/**
- * 时间差
- **/
-export const timeInterval = (endDate, startDate) => {
-	let diff = endDate.getTime() - startDate.getTime() // 时间差的毫秒数  
-	let days = Math.floor(diff / (24 * 3600 * 1000)) // 计算出相差天数  
-	//计算出小时数  
-	let leave1 = diff % (24 * 3600 * 1000) // 计算天数后剩余的毫秒数  
-	let hours = Math.floor(leave1 / (3600 * 1000))
-	//计算相差分钟数  
-	let leave2 = leave1 % (3600 * 1000) // 计算小时数后剩余的毫秒数  
-	let minutes = Math.floor(leave2 / (60 * 1000))
-	//计算相差秒数  
-	let leave3 = leave2 % (60 * 1000) // 计算分钟数后剩余的毫秒数  
-	let seconds = Math.round(leave3 / 1000)
-
-	let returnStr = seconds + "秒"
-	minutes > 0 ? returnStr = minutes + "分" + returnStr : ''
-	hours > 0 ? returnStr = hours + "小时" + returnStr : ''
-	days > 0 ? returnStr = days + "天" + returnStr : ''
-
-	return returnStr
-}
-
-/**
  * 时间格式处理
  **/
 export const dateFormatter = (datetime, fmt, fix) => {
@@ -335,7 +176,7 @@ export const delCookie = name => {
 	let cval = getCookie(name)
 	let exp = new Date()
 	exp.setTime(exp.getTime() - 1)
-	cval !== null ? document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString() : ''
+	document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString()
 }
 
 
@@ -424,8 +265,8 @@ export const formatMoney = (amount, fixed) => {
 			result = ',' + num.slice(-3) + result
 			num = num.slice(0, num.length - 3)
 		}
-		num ? result = num + result : ''
-		arr.length > 0 ? result += '.' + arr[1] : ''
+		result = num + result
+		result += '.' + arr[1]
 		return result
 	}
 	if(~~(amount) === 0) {
@@ -466,31 +307,6 @@ export const getByteLen = (value) => {
 }
 
 /*
- * 获取支付方式名称
- */
-export const getpPayType = (value) => {
-	let label = 'value'
-	const payType = [{
-		value: 'WX',
-		label: '微信'
-	}, {
-		value: 'ALIPAY',
-		label: '支付宝'
-	}, {
-		value: 'MM_INSTALMENT',
-		label: '米么分期'
-	}, {
-		value: 'BANK',
-		label: '银行卡支付'
-	}]
-	payType.forEach(item => {
-		item.value === value ? label = item.label : '' 
-	})
-	return label
-}
-
-
-/*
  * 校验
  */
 export const checkRules = (value, type) => {
@@ -517,19 +333,18 @@ export const getQueryString = (key) => {
 	}
 }
 export const getPayType = (value) =>{
-	if(value=='WX'){
+	if(value==='WX'){
 		return '微信'
-	}else if(value == 'ALIPAY'){
+	}else if(value === 'ALIPAY'){
 		return '支付宝'
-	}else if(value == 'MM_INSTALMENT'){
+	}else if(value === 'MM_INSTALMENT'){
 		return '米么分期'
-	}else if(value == 'BAK'){
+	}else if(value === 'BAK'){
 		return '银行卡支付'
 	}
 }
 export default {
 	htmlFontSize,
-	validator,
 	dateFormatter,
 	setCookie,
 	getCookie,
@@ -538,12 +353,10 @@ export default {
 	reAlignArray,
 	formatMoney,
 	emptyFormat,
-	timeInterval,
 	resetFontSize,
 	resetWindow,
 	checkTel,
 	getByteLen,
-	getpPayType,
 	checkRules,
 	getQueryString,
 	getPayType

@@ -7,16 +7,6 @@ import { message } from 'antd';
 import { getCookie,setCookie,delCookie } from './utils.js'
 let CancelToken = axios.CancelToken
 let cancel
-let sysPlatform = '';
-let ua = navigator.userAgent.toLowerCase();
-//调用设备对象的test方法判断设备类型
-if(/iphone|ipad|ipod/.test(ua)) {
-	sysPlatform = 'IOS';
-} else if(/android/.test(ua)) {
-	sysPlatform = 'ANDROID';
-} else {
-	sysPlatform = '';
-}
 // 自定义判断元素类型JS
 function toType(obj) {
     return ({}).toString.call(obj).match(/\s([a-zA-Z]+)/)[1].toLowerCase()
@@ -44,7 +34,6 @@ const _parseJSON = str => {
     try {
         return JSON.parse(str)
     } catch (ex) {}
-    return (new Function('', 'return ' + str))()
 }
 // 一般请求
 //const prefix = '/hido-core'
@@ -91,7 +80,9 @@ const post = (url, data, noBox,noLoading, noToken,formData) => {
 			respData['code'] = ~~(respData['code'])
 			respData['content'] = _parseJSON(respData['content'])
 			 if(respData['code'] !== 0) {
-			 	 if(respData['code'] === 9999){
+			 	let statucCode = [111, 1210, 1211, 9999]
+			 	 if(statucCode.indexOf(respData['code']) !== -1){
+			 	 	delCookie('mmTicket')
 			 	 	sessionStorage.setItem('locationurl',window.location.href)
 				 	window.location.href = '/login'
 				 }

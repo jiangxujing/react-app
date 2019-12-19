@@ -12,11 +12,10 @@ class PaymentList extends Component {
 			teltrue: false,
 			reserveDetail:{},
 			actualAmount:getQueryString('actualAmount'),
-			h5paysuccess:true
+			h5paysuccess:false
 		}
 	}
 	componentDidMount() {
-		console.log()
 	}
 	reservePay(){
 		let req = {
@@ -25,7 +24,8 @@ class PaymentList extends Component {
 		}
 		api.post(api.getUrl('reservePay','/hido-core'), req).then(res => {
 			let uri = ''
-			uri = window.location.origin + window.location.pathname+'/paymentList?h5paysuccess=true' + '&actualAmount=' + getQueryString('actualAmount')
+			uri = window.location.origin + window.location.pathname+'/paymentList?h5paysuccess=true&actualAmount=' + getQueryString('actualAmount')
+			console.log(uri)
 			let linkUrl = encodeURIComponent(uri)
 			setTimeout(() => {
 				window.location.href = JSON.parse(res.content.respExt).mWebUrl+'&redirect_url=' + linkUrl
@@ -38,9 +38,9 @@ class PaymentList extends Component {
 			payType:'WX_H5'
 		}
 		api.post(api.getUrl('orderPay','/hido-core'), req).then(res => {
-			if(res.code === '000'){
+			if(res.code === 0){
 				let uri = ''
-				uri = window.location.origin + window.location.pathname+'/paymentList?h5paysuccess=true' + '&actualAmount=' + getQueryString('actualAmount') + '&businessNo=' + getQueryString('businessNo') + '&fromOrder=1'
+				uri = window.location.origin + window.location.pathname+'/paymentList?h5paysuccess=true&actualAmount='+ getQueryString('actualAmount') + '&businessNo=' + getQueryString('businessNo') + '&fromOrder=1'
 				let linkUrl = encodeURIComponent(uri)
 				setTimeout(() => {
 					window.location.href = JSON.parse(res.content.respExt).mWebUrl+'&redirect_url=' + linkUrl
@@ -76,9 +76,9 @@ class PaymentList extends Component {
 					<div className="pay-amount"><span style={{fontSize:'2.8rem',fontWeight:'600'}}>￥</span>{this.state.actualAmount}</div>
 				</div>
 				<div style={{background:'#fff',marginTop:'1rem',height:'6.5rem',lineHeight:'6.5rem',paddingLeft:'1.5rem'}}>
-					<img src={require('../image/weixin.png')} style={{width:"4rem"}}/>
+					<img alt="weixin" src={require('../image/weixin.png')} style={{width:"4rem"}}/>
 					<span style={{color:'#1A2833',fontSize:'1.7rem',paddingLeft:'1.5rem'}}>微信支付</span>
-					<img src={require('../image/gouxuan@2x.png')} style={{width:"2.2rem",float:'right',paddingTop:'2rem',marginRight:'1.5rem'}}/>
+					<img alt="gouxuan" src={require('../image/gouxuan@2x.png')} style={{width:"2.2rem",float:'right',paddingTop:'2rem',marginRight:'1.5rem'}}/>
 				</div>
 				<div className="buyBtn" onClick={this.buy}>立即支付</div>
 				<div className="after-pay-wrapper" style={{display:this.state.h5paysuccess?'block':'none'}}>

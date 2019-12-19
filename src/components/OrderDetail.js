@@ -2,7 +2,6 @@ import React, {
 	Component
 } from 'react';
 import '../css/waitPaymentDetail.scss'
-import { message } from 'antd';
 import api from '../common/api.js'
 import {getPayType} from '../common/utils.js'
 class OrderDetail extends Component {
@@ -71,15 +70,16 @@ class OrderDetail extends Component {
 				deductionAmount:res.content.deductionAmount,
 				packageWriteoffs:res.content.packageWriteoffs?res.content.packageWriteoffs:[],
 			})
+			let totalPrice = this.state.totalPrice 
 			this.state.orderItemList.forEach((k,v)=>{
 				this.setState({
-					totalPrice:this.state.totalPrice+=k.salesAmount
+					totalPrice:totalPrice+=k.salesAmount
 				})
 			})
 			this.state.packageWriteoffs.forEach((k,v)=>{
 				console.log(k.writeoffAmount)
 				this.setState({
-					totalPrice:this.state.totalPrice-=k.writeoffAmount
+					totalPrice:totalPrice-=k.writeoffAmount
 				})
 			})
 			

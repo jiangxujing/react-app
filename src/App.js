@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import { resetFontSize } from './common/api.js'
-import './css/common.css'
-import 'antd/dist/antd.css';
+import './css/common.scss'
+//import 'antd/dist/antd.css';
 import routes from './route/router.js'
 class App extends Component {
 		componentDidMount() {

@@ -2,7 +2,6 @@ import React, {
 	Component
 } from 'react';
 import '../css/orderList.scss'
-import { message } from 'antd';
 import api from '../common/api.js'
 import {dateFormatter} from '../common/utils.js'
 class OrderList extends Component {
@@ -17,26 +16,8 @@ class OrderList extends Component {
 	}
 	getOrderList(){
 		api.post(api.getUrl('customer-orderList','/hido-core'), {}).then(res => {
-			res.content =  [{
-			"amount": 2400000,
-			"businessNo": "PAY20191206154943523102",
-			"createTime": 1575618584000,
-			"title": "项目收费",
-			"type": "PAY"
-		},{
-			"amount": 2400000,
-			"businessNo": "PAY20191206154943523102",
-			"createTime": 1575618584000,
-			"title": "项目收费",
-			"type": "PAY"
-		},{
-			"amount": 2400000,
-			"businessNo": "PAY20191206154943523102",
-			"createTime": 1575618584000,
-			"title": "项目收费",
-			"type": "PAY"
-		}]
-			if(res.code == '000'){
+			console.log('1111111111111=='+res.code)
+			if(res.code === 0){
 				this.setState({
 					orderList:res.content
 				})
@@ -57,12 +38,12 @@ class OrderList extends Component {
 									{dateFormatter(value.createTime,'yyyy/MM/dd EE',1)}
 								</div>
 								<div style={{padding:'1.5rem 0.5rem 1.5rem 1.5rem',display: 'table'}}>
-										<img className="order-left" src={require('../image/order_icon.png')} style={{width:"5.2rem"}}/>
+										<img alt="order_icon" className="order-left" src={require('../image/order_icon.png')} style={{width:"5.2rem"}}/>
 										<div className="order-center">
 											<div>{value.title}</div>
 											<div>￥{value.amount/100}</div>
 										</div>
-										<img className="order-right" src={require('../image/arrow.png')} style={{width:'2.2rem'}}/>
+										<img alt='arrow' className="order-right" src={require('../image/arrow.png')} style={{width:'2.2rem'}}/>
 								</div>
 							</div>
         				)

@@ -10,7 +10,7 @@ class Login extends Component{
 			btnActive:false,
 			phone:'',
 			smsSerialNo:'',
-			smcCode1:10,
+			smcCode:10,
 		}
 	}
 	componentDidMount() {
@@ -34,21 +34,20 @@ class Login extends Component{
 			phone:this.state.phone,
 			sourceFlag:1
 		}
+		let code = 10
 		api.post(api.getUrl('common-sendMobileCode','/user'), req).then(res => {
-			const str =  res.content
-			console.log(str)
 		this.setState({
 				serialNo:res.content.serialNo
 			})
 			let interval = setInterval(()=>{
 				this.setState({
-				smcCode:this.state.smcCode1--
+				smcCode:code--
 			})
 				if(this.state.smcCode<=0){
 				console.log('进来了么')
 					clearInterval(interval)
 					this.setState({
-						smcCode1:10
+						smcCode:10
 					})
 				}
 			},1000);
@@ -64,7 +63,8 @@ class Login extends Component{
 			wechat:'XM'
 		}
 		api.post(api.getUrl('login-phoneLogin','/user'), req).then(res => {
-			if(res.code == '000'){
+			
+			if(res.code === '000'){
 				console.log(res.accessToken)
 			_utils.setCookie('mmTicket',res.accessToken)
 			sessionStorage.getItem('locationurl')?window.location.href =sessionStorage.getItem('locationurl') :this.props.history.push('/')
@@ -79,7 +79,7 @@ class Login extends Component{
 				<div className="title" style={{paddingBottom:'3rem'}}>欢迎来到HIDO!</div>
 				<Input placeholder="请输入手机号" allowClear onChange={this.onChange} maxLength={11} type={'tel'} ref="phone"/>
 				{
-					this.state.smcCode1===10?<span onClick={this.getSmsCode} style={{color:'#FF7B31'}}>获取验证码</span>:
+					this.state.smcCode===10?<span onClick={this.getSmsCode} style={{color:'#FF7B31'}}>获取验证码</span>:
 					<span style={{color:'#FF7B31'}}>{this.state.smcCode}s</span>
 				}
 				<div className="border-style"></div>

@@ -2,8 +2,6 @@ import React, {
 	Component
 } from 'react';
 import '../css/reservationStatus.scss'
-import { message } from 'antd';
-import api from '../common/api.js'
 import {getQueryString} from '../common/utils.js'
 class ReservationStatus extends Component {
 	constructor(props) {
@@ -26,11 +24,11 @@ class ReservationStatus extends Component {
 			<div className="reservationStatus">
 				{
 					this.state.fromOrder?<div>
-					<img src={require('../image/order-success.png')} style={{width:"6.6rem",paddingTop:'10rem'}}/>
+					<img alt="success" src={require('../image/order-success.png')} style={{width:"6.6rem",paddingTop:'10rem'}}/>
 					<div style={{fontSize:'1.8rem',color:'#1A2833',fontWeight:'600',marginTop:'3rem'}}>支付成功</div>
 	            	<div className="reservationStatusBtn" onClick={this.openOrderDetail}>查看详情</div>
 				</div>:<div>
-					<img src={require('../image/order-success.png')} style={{width:"6.6rem",paddingTop:'10rem'}}/>
+					<img alt="order-success" src={require('../image/order-success.png')} style={{width:"6.6rem",paddingTop:'10rem'}}/>
 					<div style={{fontSize:'1.8rem',color:'#1A2833',fontWeight:'600',marginTop:'3rem'}}>预约成功</div>
 					<div style={{color:'#1A2833',fontSize:'1.6rem',paddingTop:'1.2rem'}}>请按时前往医院就诊哦</div>
 	            	<div className="reservationStatusBtn" onClick={this.openReservationDetail}>查看预约详情</div>

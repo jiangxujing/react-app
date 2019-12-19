@@ -2,7 +2,6 @@ import React, {
 	Component
 } from 'react';
 import '../css/waitPaymentDetail.scss'
-import { message } from 'antd';
 import api from '../common/api.js'
 class WaitPaymentDetail extends Component {
 	constructor(props) {
@@ -68,15 +67,16 @@ class WaitPaymentDetail extends Component {
 				deductionAmount:res.content.deductionAmount,
 				packageWriteoffs:res.content.packageWriteoffs?res.content.packageWriteoffs:[],
 			})
+			let totalPrice = this.state.totalPrice
 			this.state.orderItemList.forEach((k,v)=>{
 				this.setState({
-					totalPrice:this.state.totalPrice+=k.salesAmount
+					totalPrice:totalPrice+=k.salesAmount
 				})
 			})
 			this.state.packageWriteoffs.forEach((k,v)=>{
 				console.log(k.writeoffAmount)
 				this.setState({
-					totalPrice:this.state.totalPrice-=k.writeoffAmount
+					totalPrice:totalPrice-=k.writeoffAmount
 				})
 			})
 			
@@ -87,8 +87,8 @@ class WaitPaymentDetail extends Component {
 			meiyaOrderNo:this.props.location.search.split('?meiyaOrderNo=')[1]
 		}
 		api.post(api.getUrl('customer-createFeeOrder','/hido-core'), req).then(res => {
-			if(res.code == '000'){
-				this.props.history.push('paymentList?businessNo='+res.content.businessNo+'&fromOrder=1'+'&actualAmount='+res.content.actualAmount/100)
+			if(res.code === '000'){
+				this.props.history.push('paymentList?businessNo='+res.content.businessNo+'&fromOrder=1&actualAmount='+res.content.actualAmount/100)
 			}
 		}).catch(() => {})
 	}
