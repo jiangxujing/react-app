@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import { Input } from 'antd'; 
 import '../css/login.scss'
 import api from '../common/api.js'
-import _utils from '../common/utils.js'
+import {setCookie} from '../common/utils.js'
 class Login extends Component{
 	constructor(props){
 		super(props);
@@ -66,7 +66,7 @@ class Login extends Component{
 			
 			if(res.code === '000'){
 				console.log(res.accessToken)
-			_utils.setCookie('mmTicket',res.accessToken)
+			setCookie('mmTicket',res.accessToken)
 			sessionStorage.getItem('locationurl')?window.location.href =sessionStorage.getItem('locationurl') :this.props.history.push('/')
 			}
 			

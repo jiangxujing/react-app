@@ -23,47 +23,6 @@ class OrderDetail extends Component {
 			businessNo:this.props.location.search.split('?businessNo=')[1]
 		}
 		api.post(api.getUrl('customer-feeOrderPreview','/hido-core'), req).then(res => {
-			res.content =  {
-			"deductionAmount": 300,
-			"meiyaOrderMemol": null,
-			"meiyaOrderNo": "1575943314",
-			"meiyaOrderOpenTime": "2019-12-10 10:02:07",
-			"meiyaOrderWriter": "admin",
-			"payTime":"2019-12-10 10:02:07",
-			"payType":'WX',
-			"orderItemList": [{
-				"salesAmount": 600,
-				"itemCount": 1,
-				"itemName": "酒窝成形术1",
-				"itemNo": null,
-				"originalPrice": 600
-			},{
-				"salesAmount": 600,
-				"itemCount": 1,
-				"itemName": "酒窝成形术2",
-				"itemNo": null,
-				"originalPrice": 600
-			},{
-				"salesAmount": 600,
-				"itemCount": 1,
-				"itemName": "酒窝成形术3",
-				"itemNo": null,
-				"originalPrice": 600
-			}],
-			"packageWriteoffs": [{
-				"itemName": "酒窝成形术1",
-				"itemNo": null,
-				"writeoffAmount": 100
-			},{
-				"itemName": "酒窝成形术2",
-				"itemNo": null,
-				"writeoffAmount": 100
-			},{
-				"itemName": "酒窝成形术3",
-				"itemNo": null,
-				"writeoffAmount": 100
-			}]
-		}
 			this.setState({
 				orderDetai:res.content,
 				orderItemList:res.content.orderItemList,

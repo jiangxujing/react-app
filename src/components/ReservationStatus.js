@@ -10,9 +10,6 @@ class ReservationStatus extends Component {
 			fromOrder:getQueryString('fromOrder')
 		};
 	}
-	componentDidMount() {
-		
-	}
 	openReservationDetail=()=>{
 		this.props.history.push('reservationDetail?businessNo='+this.props.location.search.split('?businessNo=')[1])
 	}
@@ -39,5 +36,4 @@ class ReservationStatus extends Component {
 		);
 	}
 }
-
 export default ReservationStatus;

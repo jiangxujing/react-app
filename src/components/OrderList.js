@@ -16,7 +16,6 @@ class OrderList extends Component {
 	}
 	getOrderList(){
 		api.post(api.getUrl('customer-orderList','/hido-core'), {}).then(res => {
-			console.log('1111111111111=='+res.code)
 			if(res.code === 0){
 				this.setState({
 					orderList:res.content

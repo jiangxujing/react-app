@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import '../css/reservationStatus.scss'
 import api from '../common/api.js'
-import utils from '../common/utils.js'
+import {dateFormatter} from '../common/utils.js'
 class ReservationStatus extends Component {
 	constructor(props) {
 		super(props);
@@ -42,7 +42,7 @@ class ReservationStatus extends Component {
 				</div>
 				<div className="product-list">
 					<span>面诊时间</span>
-					<span style={{paddingLeft:'3rem'}}>{utils.dateFormatter(this.state.reserveDetail.appointmentDate,'yyyy-MM-dd HH:mm:ss')}</span>
+					<span style={{paddingLeft:'3rem'}}>{dateFormatter(this.state.reserveDetail.appointmentDate,'yyyy-MM-dd HH:mm:ss')}</span>
 				</div>
 				<div className="product-list" style={{display:this.state.payAmount?'block':'none',color:'#FF7B31'}}>
 					<span>预付金</span>
@@ -57,7 +57,7 @@ class ReservationStatus extends Component {
 					</div>
 					<div style={{paddingTop:'1.4rem',paddingBottom:'1.8rem'}}>
 						<span>下单时间:</span>
-						<span style={{float:'right',paddingRight:'1.5rem'}}>{utils.dateFormatter(this.state.reserveDetail.createTime,'yyyy-MM-dd HH:mm:ss')}</span>
+						<span style={{float:'right',paddingRight:'1.5rem'}}>{dateFormatter(this.state.reserveDetail.createTime,'yyyy-MM-dd HH:mm:ss')}</span>
 					</div>
 				</div>
 			</div>

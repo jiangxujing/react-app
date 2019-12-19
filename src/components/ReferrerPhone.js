@@ -9,8 +9,6 @@ class ReferrerPhone extends Component{
 	}
 	
 	handleClick = ()=>{
-		console.log('hhhhhhhhhh')
-		console.log()
 		if(this.refs.tel.value.length === 11){
 			sessionStorage.setItem('agentPhone',this.refs.tel.value)
 			this.setState({
@@ -23,7 +21,6 @@ class ReferrerPhone extends Component{
 		}
 	}
 	jumpNext = () => {
-		console.log('跳过')
 		this.props.history.push('reservation?fromReferrerPhone=1')
 	}
 	getNext=()=>{
