@@ -7,6 +7,7 @@ import ReservationStatus from '../components/ReservationStatus'
 import WaitPaymentDetail from '../components/WaitPaymentDetail'
 import OrderList from '../components/OrderList'
 import OrderDetail from '../components/OrderDetail'
+import ProductDetail from '../components/ProductDetail'
 let routes = [{
 	path: '/referrerPhone',
 	component: ReferrerPhone,
@@ -35,5 +36,9 @@ let routes = [{
 },{
 	path:"/orderList",
 	component:OrderList
+},{
+	path:"/productDetail",
+	component:ProductDetail
+	
 }]
 export default routes;

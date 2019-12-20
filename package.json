@@ -11,6 +11,10 @@
     "/user": {
       "target": "http://192.168.199.60:8080",
       "changeOrigin": true
+    },
+     "/collections-web": {
+      "target": "http://192.168.199.65:8080",
+      "changeOrigin": true
     }
   },
   "dependencies": {

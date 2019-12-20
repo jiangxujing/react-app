@@ -68,7 +68,7 @@ class Login extends Component{
 			if(res.code === 0){
 				setCookie('mmTicket',res.accessToken)
 				clearInterval(this.state.interval)
-				sessionStorage.getItem('locationurl')?window.location.href =sessionStorage.getItem('locationurl') :this.props.history.push('/referrerPhone')
+				sessionStorage.getItem('locationurl')?window.location.href =sessionStorage.getItem('locationurl') :this.props.history.push('referrerPhone')
 			}
 			
 		}).catch(() => {})
