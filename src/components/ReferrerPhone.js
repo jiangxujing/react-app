@@ -9,6 +9,7 @@ class ReferrerPhone extends Component{
 	}
 	
 	handleClick = ()=>{
+		console.log(this.refs.tel.value)
 		if(this.refs.tel.value.length === 11){
 			sessionStorage.setItem('agentPhone',this.refs.tel.value)
 			this.setState({

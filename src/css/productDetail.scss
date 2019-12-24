@@ -82,7 +82,7 @@
                     float:right;
                     height: auto;
                     position: relative;
-                    width: 8rem;
+                    width: 9rem;
                     text-align: right;
                     .share-btn{
                         padding: 5px 10px;
@@ -95,6 +95,7 @@
                         position: absolute;
                         bottom:0;
                         right:0;
+                        outline:none;
                     }
                 }
             }
@@ -114,6 +115,7 @@
              font-weight: 600;
              border:none;
              margin-left:1.5rem;
+             outline: none;
          }
     }
     .share-wrapper{
@@ -125,11 +127,36 @@
         top:0;
         .share-content{
             width:80%;
-            height:10rem;
             background: #fff;
             border-radius:1.4rem;
             position: fixed;
-            bottom:0;
+            bottom:6.5rem;
+            text-align: center;
+            margin:0 auto;
+            left: 50%;
+            margin-left: -40%;
+            .share-title{
+                font-size:1.6rem;
+                color:#1A2833;
+                font-weight: 600;
+                margin-top:2rem;
+                margin-bottom:4rem;
+            }
+           
+        }
+        .cancle-btn{
+            width:100%;
+            margin:0 0.8rem;
+            color:#1A2833;
+            font-size:1.8rem;
+            position: fixed;
+            bottom: 0;
+            width:96%;
+            height:5.5rem;
+            background: #fff;
+            text-align: center;
+            line-height: 5.5rem;
+            border-radius:1.4rem;
         }
     }
 }

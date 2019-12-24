@@ -13,18 +13,19 @@ class ProductDetail extends Component {
 			merberImg: '',
 			ruleImg: [],
 			giftPackageDTOList: [],
-			type:0,
-			shareShow:'none'
+			type: 0,
+			shareShow: 'none'
 		};
 	}
 	componentDidMount() {
 		this.getPackageDetail()
 	}
-	componentWillMount () {
+	//为了点击礼包列表url参数改变了，但是数据没变的现象，返回问题也同时修复了
+	componentWillMount() {
 		this.props.history.listen(route => {
 			this.getPackageDetail()
 		})
-	  }
+	}
 	getPackageDetail() {
 		let req = {
 			packageCode: getQueryString('packageCode')
@@ -32,7 +33,7 @@ class ProductDetail extends Component {
 		api.post(api.getUrl('queryPackage', '/collections-web'), req).then(res => {
 			let detailsPicture = []
 			let ruleImg = []
-			if(res.content.giftPackageDTODetails.detailsPicture){
+			if (res.content.giftPackageDTODetails.detailsPicture) {
 				detailsPicture = res.content.giftPackageDTODetails.detailsPicture.split(',')
 				console.log(detailsPicture)
 				for (var i = 1; i < detailsPicture.length; i++) {
@@ -45,23 +46,23 @@ class ProductDetail extends Component {
 				merberImg: detailsPicture[0],
 				ruleImg: ruleImg,
 				giftPackageDTOList: res.content.giftPackageDTOList,
-				type:res.content.homepageUrl.type
+				type: res.content.homepageUrl.type
 			})
 		}).catch(() => { })
 	}
-	getNewPackageDetail=(value)=>{
-		this.props.history.push('ProductDetail?packageCode='+value.packageCode)
+	getNewPackageDetail = (value) => {
+		this.props.history.push('ProductDetail?packageCode=' + value.packageCode)
 		//this.props.history.go()
 	}
-	getShare=(e)=>{
+	getShare = (e) => {
 		e.stopPropagation();
 		this.setState({
-			shareShow:'block'
+			shareShow: 'block'
 		})
 	}
-	closeShareBox=()=>{
+	closeShareBox = () => {
 		this.setState({
-			shareShow:'none'
+			shareShow: 'none'
 		})
 	}
 	render() {
@@ -109,9 +110,9 @@ class ProductDetail extends Component {
 							</div>
 						</div>
 					</div>
-					<img alt="merber" src={this.state.merberImg} style={{ width: '100%', padding: '1.5rem',display:this.state.merberImg?'block':'none' }} />
+					<img alt="merber" src={this.state.merberImg} style={{ width: '100%', padding: '1.5rem', display: this.state.merberImg ? 'block' : 'none' }} />
 					<div className="gray-jianju"></div>
-					<div className="product-rule" style={{display:!!this.state.ruleImg && this.state.ruleImg.length>0?'display':'none'}}>产品使用规则</div>
+					<div className="product-rule" style={{ display: !!this.state.ruleImg && this.state.ruleImg.length > 0 ? 'display' : 'none' }}>产品使用规则</div>
 					{
 						this.state.ruleImg.map((value, key) => {
 							return (
@@ -123,58 +124,68 @@ class ProductDetail extends Component {
 					}
 					<div className="gray-jianju"></div>
 					<div className="product-rule">其他礼包</div>
-				<div style={{marginBottom:'5rem'}}>
-				{
-						this.state.giftPackageDTOList.map((value, key) => {
-							return (
-								<div className="other-gift-package" key={key} onClick={this.getNewPackageDetail.bind(this,value)}>
-									<div className="gift-left">
-										<div className="gift-img-price">
-											<img className="gift-img" src={require('../image/other-package.jpg')} />
-											<div className="price-right">
-												<div className="sale-price" style={{ color: '#FF7B31', fontWeight: 'bold', lineHeight: '1' }}>
-													<span style={{ fontSize: '1.8rem' }}>¥</span><span style={{ fontSize: '3rem' }}>{value.salesPrice / 100}</span>
-													<span style={{ fontSize: '1.4rem', fontWeight: '400' }}>会员礼包</span>
+					<div style={{ marginBottom: '5rem' }}>
+						{
+							this.state.giftPackageDTOList.map((value, key) => {
+								return (
+									<div className="other-gift-package" key={key} onClick={this.getNewPackageDetail.bind(this, value)}>
+										<div className="gift-left">
+											<div className="gift-img-price">
+												<img className="gift-img" src={require('../image/other-package.jpg')} />
+												<div className="price-right">
+													<div className="sale-price" style={{ color: '#FF7B31', fontWeight: 'bold', lineHeight: '1' }}>
+														<span style={{ fontSize: '1.8rem' }}>¥</span><span style={{ fontSize: '3rem' }}>{value.salesPrice / 100}</span>
+														<span style={{ fontSize: '1.4rem', fontWeight: '400' }}>会员礼包</span>
+													</div>
+													<div style={{ color: '#8A9399', fontSize: '1.2rem', paddingTop: '3px' }}>原价¥{value.originalPrice / 100}</div>
 												</div>
-												<div style={{ color: '#8A9399', fontSize: '1.2rem', paddingTop: '3px' }}>原价¥{value.originalPrice / 100}</div>
+											</div>
+											<div style={{ paddingTop: '1.7rem' }}>
+												{
+													value.giftPackageDetailList.map((v, k) => {
+														return (
+															<div key={k} style={{ fontSize: '1.2rem', color: '#475966' }}>{v.goodsName}*{v.goodsCount}</div>
+														)
+													})
+												}
 											</div>
 										</div>
-									<div style={{paddingTop: '1.7rem' }}>
-										{
-											value.giftPackageDetailList.map((v,k)=>{
-												return (
-													<div key={k} style={{ fontSize: '1.2rem', color: '#475966' }}>{v.goodsName}*{v.goodsCount}</div>
-												)
-											})
-										}
+										<div className="gift-right">
+											<div style={{ color: '#8A9399', fontSize: '1.2rem' }}>{value.initSalesCount}人购买</div>
+											{
+												this.state.type === 2 ? <button className="share-btn" onClick={(event) => {
+													event.stopPropagation();
+												}} onClick={(e) => this.getShare(e)}>立即分享</button> : <button className="share-btn">立即购买</button>
+											}
+										</div>
 									</div>
-									</div>
-									<div className="gift-right">
-										<div style={{ color: '#8A9399', fontSize: '1.2rem' }}>{value.initSalesCount}人购买</div>
-										{
-											this.state.type===2?<button className="share-btn" onClick={(event) => {
-												event.stopPropagation();
-											}} onClick={(e)=>this.getShare(e)}>立即分享</button>:<button className="share-btn">立即购买</button>
-										}
-									</div>
-								</div>
-							)
-						})
-					}
-				</div>
+								)
+							})
+						}
+					</div>
 				</div>
 				<div className="fix-btn">
-				<button>¥{this.state.packageDetail.salesPrice/100}成为代理</button>
-					<img src={require('../image/share.png')} style={{ width: '5.8rem' }} />
+					<button>¥{this.state.packageDetail.salesPrice / 100}成为代理</button>
+					<img src={require('../image/share.png')} style={{ width: '5.8rem' }} onClick={this.getShare} />
 				</div>
-				<div className="share-wrapper" style={{display:this.state.shareShow}} onClick={this.closeShareBox}>
+				<div className="share-wrapper" style={{ display: this.state.shareShow }} onClick={this.closeShareBox}>
 					<div className="share-content">
-						<div>-分享至-</div>
-						<div>
-							<img src={require('../image/weixin.png')} style={{width:'5rem'}}/>
-							<img src={require('../image/friend.png')} style={{width:'5rem'}}/>
+						<div className="share-title">-分享至-</div>
+						<div style={{ paddingBottom: '3.8rem', display: 'flex' }}>
+							<div style={{ flex: '1' }}>
+								<img src={require('../image/weixin.png')} style={{ width: '5rem' }} />
+								<div style={{ paddingTop: '1.5rem' }}>微信好友</div>
+							</div>
+							<div style={{ flex: '1' }}>
+								<img src={require('../image/friend.png')} style={{ width: '5rem' }} />
+								<div style={{ paddingTop: '1.5rem' }}>微信朋友圈</div>
+							</div>
 						</div>
+						
 					</div>
+					<div className="cancle-btn">
+							取消
+						</div>
 				</div>
 			</div>
 		);

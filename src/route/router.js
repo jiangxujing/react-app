@@ -8,6 +8,10 @@ import WaitPaymentDetail from '../components/WaitPaymentDetail'
 import OrderList from '../components/OrderList'
 import OrderDetail from '../components/OrderDetail'
 import ProductDetail from '../components/ProductDetail'
+import OrderDetailPackage from '../components/OrderDetailPackage'
+import DeliveryInformation from '../components/DeliveryInformation'
+import BalanceWithdrawal from '../components/BalanceWithdrawal'
+import AddBankList from '../components/AddBankList'
 let routes = [{
 	path: '/referrerPhone',
 	component: ReferrerPhone,
@@ -40,5 +44,17 @@ let routes = [{
 	path:"/productDetail",
 	component:ProductDetail
 	
+},{
+	path:"/orderDetailPackage",
+	component:OrderDetailPackage
+},{
+	path:"/deliveryInformation",
+	component:DeliveryInformation
+},{
+	path:"/balanceWithdrawal",
+	component:BalanceWithdrawal
+},{
+	path:"/addBankList",
+	component:AddBankList
 }]
 export default routes;

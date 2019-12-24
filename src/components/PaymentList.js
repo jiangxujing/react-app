@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import '../css/paymentList.scss'
 import api from '../common/api.js'
-import {getQueryString} from '../common/utils.js'
+import {getQueryString,config} from '../common/utils.js'
 class PaymentList extends Component {
 	constructor(props) {
 		super(props);
@@ -16,6 +16,52 @@ class PaymentList extends Component {
 		}
 	}
 	componentDidMount() {
+		this.setState({
+			area:sessionStorage.getItem('province')+','+sessionStorage.getItem('city')+','+sessionStorage.getItem('country'),
+			detailAddress:sessionStorage.getItem('detailAddress'),
+			receiverName:sessionStorage.getItem('name'),
+			phone:sessionStorage.getItem('phone'),
+			firstCommissionRatio:sessionStorage.getItem('firstCommissionRatio'),
+			secondCommissionRatio:sessionStorage.getItem('secondCommissionRatio'),
+			channel:(config.ios && config.micromessenger)?4:((config.android && config.micromessenger)?3:((config.android && !config.micromessenger)?1:((config.ios && !config.micromessenger)?2:1)))
+		})
+	}
+	payPacke(){
+		let req = {
+			orderNo:this.state.orderNo,
+			payType:'WX_H5'
+		}
+		api.post(api.getUrl('pay','/collections-web'), req).then(res => {
+			let uri = ''
+			uri = window.location.origin + window.location.pathname+'#/paymentList?packageCode='+getQueryString('packageCode')+'&actualAmount='+this.state.salesPrice/100+'&fromPackeOrder=1&h5paysuccess=true'
+			console.log(uri)
+			let linkUrl = encodeURIComponent(uri)
+			setTimeout(() => {
+				window.location.href = JSON.parse(res.content.sceneInfo).mWebUrl+'&redirect_url=' + linkUrl
+			}, 100)
+		}).catch(() => {})
+	}
+	packeOrderPay(){
+		let req = {
+			area:this.state.area,
+			channel:this.state.channel,
+			detailAddr:this.state.detailAddress,
+			firstCommissionRatio:this.state.firstCommissionRatio,
+			orderType:4,
+			payType:2,
+			productId:getQueryString('packageCode'),
+			receiverName:this.state.receiverName,
+			receiverPhone:this.state.phone,
+			secondCommissionRatio:this.state.secondCommissionRatio
+		}
+		api.post(api.getUrl('createOrderV2','/collections-web'), req).then(res => {
+			if(res.code === 0){
+				this.setState({
+					orderNo:res.content.orderNo
+				})
+				this.payPacke()
+			}
+		}).catch(() => {})
 	}
 	reservePay(){
 		let req = {
@@ -52,6 +98,8 @@ class PaymentList extends Component {
 	buy=()=>{
 		if(getQueryString('fromOrder')){
 			this.orderPay()
+		}else if(getQueryString('fromPackeOrder')){
+			this.packeOrderPay()
 		}else{
 			this.reservePay()
 		}

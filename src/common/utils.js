@@ -10,7 +10,13 @@ let date = null,
 		'5': '五',
 		'6': '六'
 	}
-
+let ua = navigator.userAgent;
+export const config = {
+	ios:!!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/),
+	android:ua.indexOf('Android') > -1 || ua.indexOf('Adr') > -1,
+	micromessenger: /micromessenger/i.test(ua)
+}
+//micromessenger = /micromessenger/i.test(ua)
 // 控制页面字体大小
 export const htmlFontSize = () => {
 	var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
@@ -359,5 +365,6 @@ export default {
 	getByteLen,
 	checkRules,
 	getQueryString,
-	getPayType
+	getPayType,
+	config
 }
