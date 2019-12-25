@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import '../css/balanceWithdrawal.scss'
-import { Input } from 'antd'; 
+import { Input ,Drawer } from 'antd'; 
 import api from '../common/api.js'
 class BalanceWithdrawal extends Component{
 	constructor(props){
@@ -8,16 +8,27 @@ class BalanceWithdrawal extends Component{
 		this.state = {
 			freeAmount:'',
 			tipsShow:false,
-			tipsShowBtn:true
+			tipsShowBtn:true,
+			bankList:[],
+			visible:false,
+			selectAcitiveIndex:-1
 		}
 	}
 	componentDidMount() {
 		this.getBalanceDetail()
+		this.getBankList()
 	}
 	getBalanceDetail(){
 		api.post(api.getUrl('queryWithdrawal', '/hido-core'), {}).then(res => {
 			this.setState({
 				freeAmount:res.content.freeAmount
+			})
+		}).catch(() => { })
+	}
+	getBankList(){
+		api.post(api.getUrl('agent-queryBankLimit', '/hido-core'), {}).then(res => {
+			this.setState({
+				bankList:res.content
 			})
 		}).catch(() => { })
 	}
@@ -46,10 +57,28 @@ class BalanceWithdrawal extends Component{
 				tipsShowBtn:false
 			})
 		}
-		console.log(e.target.value)
-		console.log(this.state.freeAmount)
 		this.setState({
 			amount:e.target.value
+		})
+	}
+	onClose=()=>{
+		this.setState({
+			visible:false
+		})
+	}
+	openBank=()=>{
+		this.setState({
+			visible:true
+		})
+	}
+	selectBank=(item,value)=>{
+		this.setState({
+			selectAcitiveIndex:item,
+			visible:false,
+			bankName:value.bankName
+		})
+		setTimeout(()=>{
+			console.log(item)
 		})
 	}
 	render(){
@@ -65,18 +94,52 @@ class BalanceWithdrawal extends Component{
 						this.state.tipsShow?<div style={{color:'#FF0000',padding:'1.1rem 0 1.1rem 1.5rem'}}>{this.state.tipText}</div>:<div style={{padding:'1.1rem 0 1.1rem 1.5rem'}}>可用余额{this.state.freeAmount/100}(最低提现100元)</div>
 					}
 					<div style={{width:'100%',height:'0.5px',background:'#eee',border:'0.5px solid #eee'}}></div>
-					<div style={{padding:'1.5rem'}}>
+					<div style={{padding:'1.5rem'}} onClick={this.openBank}>
 						<img alt="order_icon" src={require('../image/add.png')} style={{width:"2.4rem"}}/>
 						<span style={{color:'#8A9399',fontSize:'1.4rem',fontWeight:'400',paddingLeft:'1.8rem'}}>添加银行卡</span>
-						<img src={require('../image/arrow.png')} style={{width:'2.2rem',float:'right',marginRight:'1rem'}}/>
+						<img alt="arrow" src={require('../image/arrow.png')} style={{width:'2.2rem',float:'right',marginRight:'1rem'}}/>
+					</div>
+					<div>
+						<img src={require('../image/add.png')}/>
+						<div>
+							<div>招商银行</div>
+							<div>
+								尾号
+							</div>
+							<img src={require('../image/arrow.png')}/>
+						</div>
 					</div>
 				</div>
 				<div style={{textAlign:'center',marginTop:'30%'}}>
 				{
 					this.state.tipsShowBtn?<button className="confirmBtn-balance" style={{opacity:'0.5'}}>确认提现</button>:<button className="confirmBtn-balance" onClick={this.corfimWithdraw}>确认提现</button>
 				}
-				  
 				</div>
+				  <Drawer
+		          title=""
+		          placement="bottom"
+		          closable={false}
+		          onClose={this.onClose}
+		          visible={this.state.visible}
+		          getContainer={false}
+		          style={{ position: 'absolute' }}
+		        >
+		      	  <ul className="address-list">
+	        		{
+						this.state.bankList.map((value, key) => {
+							return (
+							<li key={key} onClick={this.selectBank.bind(this,key,value)} className={key===this.state.currentIndexProvince?"active":null}>
+				        		<img className="bankPhoto" src={value.bankPhoto}/>
+				        		<span>{value.bankName}</span>
+				        		{
+									this.state.selectAcitiveIndex===key?<img alt="arrow" src={require('../image/gouxuan@2x.png')} style={{width:'2.2rem',float:'right',marginRight:'1rem',marginTop:'2rem'}}/>:null
+								}
+				        	</li>
+							)
+						})
+					}
+		        </ul>
+		        </Drawer>
 			</div>
 		)
 	}

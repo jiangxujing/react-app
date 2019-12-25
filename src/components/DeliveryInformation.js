@@ -1,11 +1,10 @@
 import React, {
 	Component
 } from 'react';
-import { Input ,Drawer, Button } from 'antd'; 
+import { Input ,Drawer } from 'antd'; 
 import '../css/common.scss'
 import '../css/deliveryInformation.scss'
 import api from '../common/api.js'
-import {getQueryString} from '../common/utils.js'
 import { message } from 'antd';
 class DeliveryInformation extends Component {
 	constructor(props) {
@@ -71,7 +70,6 @@ class DeliveryInformation extends Component {
 						city:k.cityName
 					})
 				}
-				
 			})
   }
   selectCountry=(value,key)=>{
@@ -105,18 +103,20 @@ class DeliveryInformation extends Component {
      this.setState({
           [inputName]:inputValue
      })
-     if(this.state.name && this.state.phone && this.state.detailAddress && this.state.country){
-  		this.setState({
-  			gray:false
-  		})
-  	}else{
-  		this.setState({
-  			gray:true
-  		})
-  	}
+     setTimeout(()=>{
+     	  if(this.state.name && this.state.phone && this.state.detailAddress && this.state.country){
+	  		this.setState({
+	  			gray:false
+	  		})
+	  	}else{
+	  		this.setState({
+	  			gray:true
+	  		})
+	  	}
   	sessionStorage.setItem('name',this.state.name)
     sessionStorage.setItem('phone',this.state.phone)
     sessionStorage.setItem('detailAddress',this.state.detailAddress)
+     },100)
   }
   saveAddress=()=>{
   	let saveShow = true
@@ -164,7 +164,7 @@ class DeliveryInformation extends Component {
 						 <div onClick={this.showDrawer}>
 						 	<span>地区</span>
 						 	<span style={{display:this.state.country?'inline':'none',paddingLeft:'3rem'}}>{this.state.province}/{this.state.city}/{this.state.country}</span>
-							<img src={require('../image/arrowbank.png')} style={{width:'2.2rem',float:'right',paddingTop:'1.5rem'}}/>
+							<img alt="arrowbank" src={require('../image/arrowbank.png')} style={{width:'2.2rem',float:'right',paddingTop:'1.5rem'}}/>
 						</div>
 						<div className="detail-adrees">
 							<Input  placeholder="详细地址：如道路；门牌号；小区等" allowClear onChange={this.handle} name="detailAddress" value={detailAddress} style={{lineHeight:'6rem'}}  type='text'/>

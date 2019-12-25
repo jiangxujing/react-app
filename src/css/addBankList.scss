@@ -8,4 +8,63 @@
         vertical-align: middle;
         border-bottom:0.5px solid #eee;
     }
+    .bank-list{
+        border-bottom:0.5px solid #eee;
+        height:6rem;
+        line-height: 6rem;
+        margin:0 1.5rem;
+    }
+    .bank-title{
+        color:#1A2833;
+        font-size:1.5rem;
+        font-weight: 400;
+    }
+    .send-msg{
+        width:8.6rem;
+        height:2.6rem;
+        border:1px solid #FF7B31;
+        border-radius:1.3rem;
+        text-align: center;
+        line-height: 2.6rem;
+        font-size: 1.2rem;
+        color:#FF7B31;
+        font-weight: 400;
+        background: #fff;
+        outline: none;
+    }
+    .protocol{
+        font-size: 1.2rem;
+        padding:1.6rem 0 0 1.5rem;
+    }
+    .submit-btn{
+        width:70%;
+        height:4.5rem;
+        border-radius:2.3rem;
+        color:#fff;
+        font-size:1.7rem;
+        font-weight: 500;
+        text-align: center;
+        line-height:4.5rem;
+        border:none;
+        outline: none;
+        margin-top:3rem;
+        background:linear-gradient(132deg,rgba(255,175,130,1) 0%,rgba(255,123,49,1) 100%);
+    }
+    .bankPhoto{
+        width:4rem;
+    }
+    .ant-drawer-body{
+        padding:1.5rem!important;
+            }
+    .address-list{
+        padding-left:0;
+        li{
+            height:6.5rem;
+            line-height: 6.5rem;
+            border-bottom:0.5px solid #EAEAEA;
+        }
+        span{
+            padding-left:1.5rem;
+        }
+    }
 }

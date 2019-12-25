@@ -61,7 +61,9 @@ class OrderDetailPackage extends Component {
 	queryAgent(){
 		api.post(api.getUrl('queryAgent','/hido-core'), {}).then(res => {
 			if(!res.content.firstMobile && res.content.mobile){
-				this.state.recommendedPhone = res.content.mobile
+				this.setState({
+					recommendedPhone:res.content.mobile
+				})
 			}
 			this.setState({
 				loginPhone:res.content.loginMobile,
@@ -100,19 +102,19 @@ class OrderDetailPackage extends Component {
 					this.state.country?<div className="delivery-information delivery-hasaddress">
 					<div>
 						<span style={{paddingLeft:'1.5rem'}}>{this.state.name}{this.state.phone}</span>
-						<img className="arrow" src={require('../image/arrow.png')} style={{width:'2.2rem'}}/>
+						<img alt="arrow" className="arrow" src={require('../image/arrow.png')} style={{width:'2.2rem'}}/>
 					</div>
 					<div style={{paddingLeft:'1.5rem',paddingTop:'1rem'}}>{this.state.province}{this.state.city}{this.state.country}</div>
 					<div style={{paddingLeft:'1.5rem',paddingBottom:'1rem'}}>{this.state.detailAddress}</div>
 				</div>:<div className="delivery-information" onClick={this.getUserInfo}>
 					<img className="add" alt="add" src={require('../image/add.png')}/>
 					<span>收货信息</span>
-					<img className="arrow" src={require('../image/arrow.png')} style={{width:'2.2rem'}}/>
+					<img alt="arrow" className="arrow" src={require('../image/arrow.png')} style={{width:'2.2rem'}}/>
 				</div>
 				}
 				<div className="package-detail">
 					<div style={{padding:'1.5rem',display: 'flex'}}>
-						<img src={this.state.listPicture} className="package-img"/>
+						<img alt="package-img" src={this.state.listPicture} className="package-img"/>
 						<div className="package-content">
 							<div className="title-package">{this.state.title}</div>
 							{

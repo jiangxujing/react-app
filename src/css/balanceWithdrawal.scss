@@ -34,4 +34,18 @@
         outline: none;
         background:linear-gradient(132deg,rgba(255,175,130,1) 0%,rgba(255,123,49,1) 100%);
     }
+     .bankPhoto{
+        width:4rem;
+    }
+      .address-list{
+        padding-left:0;
+        li{
+            height:6.5rem;
+            line-height: 6.5rem;
+            border-bottom:0.5px solid #EAEAEA;
+        }
+        span{
+            padding-left:1.5rem;
+        }
+    }
 }

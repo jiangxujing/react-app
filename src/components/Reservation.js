@@ -230,7 +230,6 @@ class Reservation extends Component {
 		}
 	}
 	disabledEndDate = (endValue) => {
-		let me = this;
 		const startValue = this.state.currentTime + 24 * 60 * 60;
 		if(!endValue || !startValue) {
 			return false;

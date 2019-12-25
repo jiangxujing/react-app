@@ -71,8 +71,8 @@ class ProductDetail extends Component {
 				<div style={{ padding: '1.5rem' }}>
 					<img alt="header" src={this.state.packageDetail.headPicture} style={{ width: '100%' }} />
 					<div style={{ paddingTop: '1rem', paddingBottom: '1rem' }}>
-						<img src={require('../image/gou.png')} style={{ width: '1.2rem' }} /><span style={{ fontSize: '1.2rem', color: '#8A9399', paddingLeft: '0.4rem' }}>随时退</span>
-						<img src={require('../image/gou.png')} style={{ width: '1.2rem', marginLeft: '1.8rem' }} /><span style={{ fontSize: '1.2rem', color: '#8A9399', paddingLeft: '0.4rem' }}>随时退</span>
+						<img alt="gou" src={require('../image/gou.png')} style={{ width: '1.2rem' }} /><span style={{ fontSize: '1.2rem', color: '#8A9399', paddingLeft: '0.4rem' }}>随时退</span>
+						<img alt="gou" src={require('../image/gou.png')} style={{ width: '1.2rem', marginLeft: '1.8rem' }} /><span style={{ fontSize: '1.2rem', color: '#8A9399', paddingLeft: '0.4rem' }}>随时退</span>
 						<span style={{ fontSize: '1.2rem', color: '#8A9399', paddingTop: '0.5rem', float: 'right' }}>{this.state.packageDetail.initSalesCount}人购买</span>
 					</div>
 				</div>
@@ -87,7 +87,7 @@ class ProductDetail extends Component {
 									<div key={key}>
 										<div style={{ width: '100%', overflow: 'hidden', paddingBottom: '2rem' }} >
 											<div className="gift-left">
-												<img src={require('../image/double.png')} style={{ width: '0.8rem' }} />
+												<img alt="double" src={require('../image/double.png')} style={{ width: '0.8rem' }} />
 												<span>{value.goodsName}</span>
 											</div>
 											<div className="gift-right">
@@ -117,7 +117,7 @@ class ProductDetail extends Component {
 						this.state.ruleImg.map((value, key) => {
 							return (
 								<div key={key}>
-									<img src={value} style={{ width: '100%', padding: '1.5rem 1.5rem 0 1.5rem' }} />
+									<img alt="ruleImg" src={value} style={{ width: '100%', padding: '1.5rem 1.5rem 0 1.5rem' }} />
 								</div>
 							)
 						})
@@ -131,7 +131,7 @@ class ProductDetail extends Component {
 									<div className="other-gift-package" key={key} onClick={this.getNewPackageDetail.bind(this, value)}>
 										<div className="gift-left">
 											<div className="gift-img-price">
-												<img className="gift-img" src={require('../image/other-package.jpg')} />
+												<img alt="gift-img" className="gift-img" src={require('../image/other-package.jpg')} />
 												<div className="price-right">
 													<div className="sale-price" style={{ color: '#FF7B31', fontWeight: 'bold', lineHeight: '1' }}>
 														<span style={{ fontSize: '1.8rem' }}>¥</span><span style={{ fontSize: '3rem' }}>{value.salesPrice / 100}</span>
@@ -153,9 +153,7 @@ class ProductDetail extends Component {
 										<div className="gift-right">
 											<div style={{ color: '#8A9399', fontSize: '1.2rem' }}>{value.initSalesCount}人购买</div>
 											{
-												this.state.type === 2 ? <button className="share-btn" onClick={(event) => {
-													event.stopPropagation();
-												}} onClick={(e) => this.getShare(e)}>立即分享</button> : <button className="share-btn">立即购买</button>
+												this.state.type === 2 ? <button className="share-btn" onClick={(e) => this.getShare(e)}>立即分享</button> : <button className="share-btn">立即购买</button>
 											}
 										</div>
 									</div>
@@ -166,18 +164,18 @@ class ProductDetail extends Component {
 				</div>
 				<div className="fix-btn">
 					<button>¥{this.state.packageDetail.salesPrice / 100}成为代理</button>
-					<img src={require('../image/share.png')} style={{ width: '5.8rem' }} onClick={this.getShare} />
+					<img alt="share" src={require('../image/share.png')} style={{ width: '5.8rem' }} onClick={this.getShare} />
 				</div>
 				<div className="share-wrapper" style={{ display: this.state.shareShow }} onClick={this.closeShareBox}>
 					<div className="share-content">
 						<div className="share-title">-分享至-</div>
 						<div style={{ paddingBottom: '3.8rem', display: 'flex' }}>
 							<div style={{ flex: '1' }}>
-								<img src={require('../image/weixin.png')} style={{ width: '5rem' }} />
+								<img alt="weixin" src={require('../image/weixin.png')} style={{ width: '5rem' }} />
 								<div style={{ paddingTop: '1.5rem' }}>微信好友</div>
 							</div>
 							<div style={{ flex: '1' }}>
-								<img src={require('../image/friend.png')} style={{ width: '5rem' }} />
+								<img alt="friend" src={require('../image/friend.png')} style={{ width: '5rem' }} />
 								<div style={{ paddingTop: '1.5rem' }}>微信朋友圈</div>
 							</div>
 						</div>

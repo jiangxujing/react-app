@@ -40,12 +40,13 @@ class Login extends Component{
 				serialNo:res.content.serialNo,
 				secondshow:true
 			})
-			this.state.interval = setInterval(()=>{
+			let interval = this.state.interval
+			interval = setInterval(()=>{
 				this.setState({
 				smcCode:code--
 			})
 				if(this.state.smcCode<=0){
-					clearInterval(this.state.interval)
+					clearInterval(interval)
 					this.setState({
 						smcCode:9,
 						secondshow:false
@@ -65,9 +66,10 @@ class Login extends Component{
 			wechat:'XM'
 		}
 		api.post(api.getUrl('login-phoneLogin','/user'), req).then(res => {
+			let interval = this.state.interval
 			if(res.code === 0){
 				setCookie('mmTicket',res.accessToken)
-				clearInterval(this.state.interval)
+				clearInterval(interval)
 				sessionStorage.getItem('locationurl')?window.location.href =sessionStorage.getItem('locationurl') :this.props.history.push('referrerPhone')
 			}
 			
